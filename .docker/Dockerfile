@@ -5,15 +5,15 @@ RUN groupadd docker && usermod -aG docker vscode
 
 USER vscode
 
-RUN apt-get update -y && apt-get upgrade -y
+RUN sudo apt-get update -qy && sudo apt-get upgrade -qy
 
+RUN pwd && ls -a
 #RUN python3 -m venv env
 
-#RUN bash -c source env/bin/activate
+#RUN source env/bin/activate
 
 #RUN pip install --no-cache-dir -r requirements.txt
 
 #COPY . .
 
 ENTRYPOINT ["sleep", "infinity"]
-
