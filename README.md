@@ -34,7 +34,7 @@ Dont forget to change the virtual environment in your prompt
 
 To only run the app, use Make Run
 
-*'make run'*
+*`make run`*
 
 If you want to update the requirements.txt file with the latest packages use Make Freeze
 
