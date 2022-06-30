@@ -1,2 +1,4 @@
-  # Dummy functionality
-  print("Hello World")
+# Dummy content
+
+def salute():
+    print("Hello World!")
