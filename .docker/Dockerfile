@@ -1,7 +1,6 @@
 #The base image for the container 
 FROM python:3.8-slim-bullseye AS base
 
-
 RUN apt-get update -qqy && \
     apt-get install -qqy python3-dev \
                 python3-venv \
@@ -18,26 +17,13 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Turns off buffering for easier container logging 
 ENV PYTHONUNBUFFERED=1 
  
-WORKDIR /app
-
-# Copy python requirements to the docker container and install
-
-
-RUN git clone https://github.com/estebanmatias92/pythondevenv.git .
-
-RUN pwd && ls -a
-
-RUN python -m pip install -r requirements.txt 
-
-
-
 FROM base as dev
-
-COPY . .
 
 RUN useradd -s /bin/bash -m vscode
 RUN groupadd docker && usermod -aG docker vscode
 
 USER vscode
 
-ENTRYPOINT ["sleep", "infinity"]
+CMD ["python", "-m", "pip", "install", "-r", "requirements.txt"] 
+
+CMD ["sleep", "infinity"]
