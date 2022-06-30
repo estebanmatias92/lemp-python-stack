@@ -14,7 +14,11 @@ Once created the Environment, open it with VS Code
 
 ### 3 - Create a new Python project
 
-Now from the terminal you can run the Python CLI commands and start with a new Project
+Now from the terminal you can run the Python CLI commands and create with a new environment
+
+*`python3 -m venv env && . env/bin/activate`*
+
+And proceed to install the dependencies
 
 *`pip install -r requirements.txt`*
 

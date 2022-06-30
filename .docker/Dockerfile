@@ -17,6 +17,9 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Turns off buffering for easier container logging 
 ENV PYTHONUNBUFFERED=1 
 
+
+FROM base AS dev
+
 ENV MYUSERNAME="vscode"
 
 RUN useradd -s /bin/bash -m $MYUSERNAME
@@ -26,11 +29,6 @@ USER $MYUSERNAME
 
 RUN echo 'export PATH="$HOME/.local/bin:$HOME/bin:$DOCKERDEVENVDIRECTORY/env/bin:$PATH"' >> /home/$MYUSERNAME/.bashrc
 
-
-
-FROM base AS dev
-
-RUN python3 -m venv $DOCKERDEVENVDIRECTORY/env && \
-    . $DOCKERDEVENVDIRECTORY/env/bin/activate
+CMD python3 -m venv env && . env/bin/activate && pip install -r requirements.txt
 
 CMD ["sleep", "infinity"]
