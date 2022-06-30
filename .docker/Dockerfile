@@ -12,7 +12,7 @@ RUN apt-get update -qqy && \
 
 RUN python3 -m venv $DOCKERDEVENVDIRECTORY/env && \
     . $DOCKERDEVENVDIRECTORY/env/bin/activate
-
+    
 # Keeps Python from generating .pyc files in the container 
 ENV PYTHONDONTWRITEBYTECODE=1 
  
