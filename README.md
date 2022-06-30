@@ -28,6 +28,10 @@ You can save time and effort and use Make too
 
 *`make`*
 
+And use Make Clean to clean cache files
+
+*`make clean`*
+
 
 
 

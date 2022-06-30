@@ -4,8 +4,10 @@
 
 # Global Variables
 VENV := /$(notdir $(shell pwd))
-PYTHON := $(VENV)/bin/python3
-PIP := $(VENV)/bin/pip
+#PYTHON := $(VENV)/bin/python3
+PYTHON := python3
+#PIP := $(VENV)/bin/pip
+PIP := pip
 
 # Recipes
 run: $(VENV)/bin/activate
@@ -14,8 +16,7 @@ run: $(VENV)/bin/activate
 
 $(VENV)/bin/activate: requirements.txt
 	python3 -m venv $(VENV)
-	pip install -r requirements.txt
-#	$(PIP) install -r requirements.txt
+	$(PIP) install -r requirements.txt
 
 
 clean:
