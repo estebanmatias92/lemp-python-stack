@@ -16,6 +16,7 @@ run: $(VENV)/bin/activate
 
 $(VENV)/bin/activate: requirements.txt
 	python3 -m venv $(VENV)
+	. $(VENV)/bin/activate
 	$(PIP) install -r requirements.txt
 
 
