@@ -1,7 +1,6 @@
 #The base image for the container 
 FROM python:3.8-slim-bullseye AS base
 
-WORKDIR /app
 
 RUN apt-get update -qqy && \
     apt-get install -qqy python3-dev \
@@ -11,7 +10,7 @@ RUN apt-get update -qqy && \
     apt-get upgrade -qqy
 
 RUN python3 -m venv env && \
-    . /env/bin/activate
+    . env/bin/activate
 
 # Keeps Python from generating .pyc files in the container 
 ENV PYTHONDONTWRITEBYTECODE=1 
@@ -19,6 +18,8 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Turns off buffering for easier container logging 
 ENV PYTHONUNBUFFERED=1 
  
+WORKDIR /app
+
 # Copy python requirements to the docker container and install
 
 RUN pwd && ls -a
