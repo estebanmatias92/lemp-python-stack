@@ -1,7 +1,7 @@
 #The base image for the container 
 FROM python:3.8-slim-bullseye AS base
 
-WORKDIR ./code
+WORKDIR /code
 
 RUN apt update -qqy && \
     apt install -qqy python3-dev \
@@ -19,7 +19,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1 
  
 # Copy python requirements to the docker container and install
-COPY ./requirements.txt . 
+COPY ./../requirements.txt . 
 
 RUN python -m pip install -r requirements.txt 
 
