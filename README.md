@@ -16,7 +16,7 @@ Once created the Environment, open it with VS Code
 
 Now from the terminal you can run the Python CLI commands and create with a new environment
 
-*`python3 -m venv env && . env/bin/activate`*
+*`python -m venv $(pwd) && . $(pwd)/bin/activate`*
 
 And proceed to install the dependencies
 
