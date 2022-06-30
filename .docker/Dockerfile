@@ -12,16 +12,19 @@ RUN apt-get update -qqy && \
 
 RUN python3 -m venv $DOCKERDEVENVDIRECTORY/env && \
     . $DOCKERDEVENVDIRECTORY/env/bin/activate
-    
+
 # Keeps Python from generating .pyc files in the container 
 ENV PYTHONDONTWRITEBYTECODE=1 
  
 # Turns off buffering for easier container logging 
 ENV PYTHONUNBUFFERED=1 
  
+
+ 
 FROM base as dev
 
-ENV $MYUSERNAME="vscode"
+ENV MYUSERNAME="vscode"
+
 RUN useradd -s /bin/bash -m $MYUSERNAME
 RUN groupadd docker && usermod -aG docker $MYUSERNAME
 
