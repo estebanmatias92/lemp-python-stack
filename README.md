@@ -22,9 +22,11 @@ Proceed to install the first dependencies
 
 *`pip install -r requirements.txt`*
 
-#### (Running all together)
+#### (Running all together with Make)
 
-*`python -m venv $(pwd) && . $(pwd)/bin/activate && pip install -r requirements.txt`*
+You can save time and effort and use Make too
+
+*`make`*
 
 
 

@@ -3,9 +3,9 @@
 .PHONY: run clean
 
 # Global Variables
-VENV = $(pwd)
-PYTHON = $(VENV)/bin/python3
-PIP = $(VENV)/bin/pip
+VENV := /$(notdir $(shell pwd))
+PYTHON := $(VENV)/bin/python3
+PIP := $(VENV)/bin/pip
 
 # Recipes
 run: $(VENV)/bin/activate
