@@ -16,7 +16,7 @@ Once created the Environment, open it with VS Code
 
 Now from the terminal you can run the Python CLI commands and create with a new environment
 
-*`python -m venv $(pwd) && . $(pwd)/bin/activate`*
+*`python -m venv venv && . venv/bin/activate`*
 
 Proceed to install the first dependencies
 
@@ -24,11 +24,23 @@ Proceed to install the first dependencies
 
 #### (Running all together with Make)
 
-You can save time and effort and use Make too
+You can save time and effort and use Make to create the project and install the dependencies
 
 *`make`*
 
-And use Make Clean to clean cache files
+Dont forget to change the virtual environment in your prompt
+
+*`. venv/bin/activate`*
+
+To only run the app, use Make Run
+
+*'make run'*
+
+If you want to update the requirements.txt file with the latest packages use Make Freeze
+
+*`make freeze`*
+
+If you need to remove cache files or the environment use Make Clean
 
 *`make clean`*
 
