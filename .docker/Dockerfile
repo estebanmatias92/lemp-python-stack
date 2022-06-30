@@ -19,7 +19,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1 
  
 # Copy python requirements to the docker container and install
-COPY ./../requirements.txt . 
+COPY /code/requirements.txt . 
 
 RUN python -m pip install -r requirements.txt 
 
