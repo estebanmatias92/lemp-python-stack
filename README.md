@@ -22,13 +22,9 @@ Proceed to install the first dependencies
 
 *`pip install -r requirements.txt`*
 
-And initialize the repository for the Project
-
-*`git init .`*
-
 #### (Running all together)
 
-*`python -m venv $(pwd) && . $(pwd)/bin/activate && pip install -r requirements.txt && git init .`*
+*`python -m venv $(pwd) && . $(pwd)/bin/activate && pip install -r requirements.txt`*
 
 
 
