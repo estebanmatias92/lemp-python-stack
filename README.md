@@ -12,11 +12,11 @@ Use this github url to create the Docker Dev Environment in Docker Desktop.
 
 Once created the Environment, open it with VS Code
 
-### 2 - Create a new Python project
+### 3 - Create a new Python project
 
-Now from the terminal you can run the Python CLI commands and build a new Project
+Now from the terminal you can run the Python CLI commands and start with a new Project
 
-*`python `*
+*`pip install -r requirements.txt`*
 
 
 
