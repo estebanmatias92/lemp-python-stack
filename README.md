@@ -24,13 +24,9 @@ Proceed to install the first dependencies
 
 #### (Running all together with Make)
 
-You can save time and effort and use Make to create the project and install the dependencies
+You can save time and effort and use Make to create the project and install the dependencies, and activate the environment immediately afterwards
 
-*`make`*
-
-Dont forget to change the virtual environment in your prompt
-
-*`. venv/bin/activate`*
+*`make && . venv/bin/activate`*
 
 To only run the app, use Make Run
 
