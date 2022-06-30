@@ -17,7 +17,7 @@ run: deps
 
 
 create_env:
-	$(PYTHON) -m venv $(VENV) ; . $(VENVACTIVATE)
+	python3 -m venv $(VENV) ; . $(VENVACTIVATE)
 	
 	
 deps: create_env
