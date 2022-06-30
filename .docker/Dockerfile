@@ -23,7 +23,7 @@ WORKDIR /app
 # Copy python requirements to the docker container and install
 
 
-RUN git clone git@github.com:estebanmatias92/pythondevenv.git .
+RUN git clone https://github.com/estebanmatias92/pythondevenv.git .
 
 RUN pwd && ls -a
 
