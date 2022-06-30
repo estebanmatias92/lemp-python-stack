@@ -1,11 +1,11 @@
 #The base image for the container 
 FROM python:3.8-slim-bullseye AS base
 
-RUN apt update -qqy && \
-    apt install -qqy python3-dev \
+RUN apt-get update -qqy && \
+    apt-get install -qqy python3-dev \
                 python3-venv \
-                python-pip && \
-    apt upgrade -qqy
+                python3-pip && \
+    apt-get upgrade -qqy
 
 RUN python3 -m venv env && \
     source env/bin/activate
