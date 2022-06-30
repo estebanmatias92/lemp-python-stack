@@ -4,7 +4,8 @@ FROM python:3.8-slim-bullseye AS base
 RUN apt-get update -qqy && \
     apt-get install -qqy python3-dev \
                 python3-venv \
-                python3-pip && \
+                python3-pip \
+                git && \
     apt-get upgrade -qqy
 
 RUN python3 -m venv env && \
