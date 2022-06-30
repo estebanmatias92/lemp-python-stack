@@ -8,7 +8,7 @@ RUN apt-get update -qqy && \
     apt-get upgrade -qqy
 
 RUN python3 -m venv env && \
-    source env/bin/activate
+    env/bin/activate
 
 # Keeps Python from generating .pyc files in the container 
 ENV PYTHONDONTWRITEBYTECODE=1 
