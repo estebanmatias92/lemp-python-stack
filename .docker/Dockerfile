@@ -9,7 +9,7 @@ RUN apt update -qqy && \
 
 RUN python3 -m venv env && \
     source env/bin/activate
-    
+
 # Keeps Python from generating .pyc files in the container 
 ENV PYTHONDONTWRITEBYTECODE=1 
  
@@ -17,7 +17,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1 
  
 # Copy python requirements to the docker container and install
-COPY requirements.txt . 
+COPY ../requirements.txt . 
 
 RUN python -m pip install -r requirements.txt 
 
