@@ -24,6 +24,7 @@ RUN groupadd docker && usermod -aG docker vscode
 
 USER vscode
 
-CMD ["python", "-m", "pip", "install", "-r", "requirements.txt"] 
+RUN echo 'export PATH="$HOME/.local/bin:$PATH"' >> /home/vscode/.bashrc && \
+    echo 'export PATH="$HOME/bin:$PATH"' >> /home/vscode/.bashrc
 
 CMD ["sleep", "infinity"]
