@@ -18,9 +18,18 @@ Now from the terminal you can run the Python CLI commands and create with a new 
 
 *`python -m venv $(pwd) && . $(pwd)/bin/activate`*
 
-And proceed to install the dependencies
+Proceed to install the first dependencies
 
 *`pip install -r requirements.txt`*
+
+And initialize the repository for the Project
+
+*`git init .`*
+
+#### (Running all together)
+
+*`python -m venv $(pwd) && . $(pwd)/bin/activate && pip install -r requirements.txt && git init .`*
+
 
 
 
