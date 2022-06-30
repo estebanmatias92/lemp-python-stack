@@ -22,9 +22,10 @@ WORKDIR /app
 
 # Copy python requirements to the docker container and install
 
-RUN pwd && ls -a
 
-#COPY requirements.txt . 
+COPY requirements.txt . 
+
+RUN pwd && ls -a
 
 RUN python -m pip install -r requirements.txt 
 
