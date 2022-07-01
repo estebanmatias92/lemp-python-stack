@@ -42,11 +42,10 @@ If you need to remove cache files or the environment use Make Clean
 
 
 
-
 ## Clarifications
 
 ### Git
 
 To use git like you normally do in your host machine, you have to have:
 - Docker Desktop ***"WSL 2 based engine"*** option enabled
-- Your ***github credentials*** in your WSL2 distro configured
+- Your ***github credentials*** configured in your default WSL2 distro
