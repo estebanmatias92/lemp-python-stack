@@ -11,16 +11,17 @@ PIP := $(VENV)/bin/pip
 #PIP := pip
 VENVACTIVATE := $(VENV)/bin/activate
 
+
 # Recipes
-run: deps
+build: requirements.txt run
+
+run:
 	$(PYTHON) app.py
 
-
 create_env:
-	python3 -m venv $(VENV) ; . $(VENVACTIVATE)
+	python3 -m venv $(VENV)
 	
-	
-deps: create_env
+requirements.txt: create_env
 	. $(VENVACTIVATE) && $(PIP) install -U -r requirements.txt && if [ "$(ls requirements)" ] ; then $(PIP) install -U -r requirements/* ; fi
 
 freeze:
