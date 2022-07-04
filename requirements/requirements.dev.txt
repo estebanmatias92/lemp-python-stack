@@ -1,0 +1,5 @@
+setuptools
+pylint
+pycodestyle
+pipreqs
+black
