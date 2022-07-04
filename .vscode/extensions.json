@@ -1,7 +1,10 @@
 {
     "recommendations": [
+        "visualstudioexptteam.vscodeintellicode",
         "ms-python.python",
         "ms-python.vscode-pylance",
-        "ms-toolsai.jupyter"
+        "ms-toolsai.jupyter",
+        "tabnine.tabnine-vscode",
+        "esbenp.prettier-vscode"
     ]
 }
