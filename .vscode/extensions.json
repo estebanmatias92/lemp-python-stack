@@ -1,10 +1,12 @@
 {
     "recommendations": [
         "visualstudioexptteam.vscodeintellicode",
+        "visualstudioexptteam.intellicode-api-usage-examples",
         "ms-python.python",
         "ms-python.vscode-pylance",
+        "ms-python.black-formatter",
         "ms-toolsai.jupyter",
-        "tabnine.tabnine-vscode",
-        "esbenp.prettier-vscode"
+        "sourcery.sourcery",
+        "formulahendry.code-runner"
     ]
 }
