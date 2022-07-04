@@ -28,17 +28,25 @@ You can save time and effort and use Make to create the project and install the 
 
 *`make && . venv/bin/activate`*
 
-To only run the app, use Make Run
+To run the app, use Make Run
 
 *`make run`*
 
-If you want to update the requirements.txt file with the latest packages use Make Freeze
+Auto-install imported packages and upgrade all packages
+
+*`make update`*
+
+To manually update the requirements.txt file with the latest packages use Make Freeze
 
 *`make freeze`*
 
 If you need to remove cache files or the environment use Make Clean
 
 *`make clean`*
+
+Uninstall all the environment packages
+
+*`make uninstall`*
 
 
 
