@@ -5,8 +5,9 @@
         "ms-python.python",
         "ms-python.vscode-pylance",
         "ms-python.black-formatter",
-        "ms-toolsai.jupyter",
+        "KevinRose.vsc-python-indent",
+        "njpwerner.autodocstring",
         "sourcery.sourcery",
-        "formulahendry.code-runner"
+        "ms-toolsai.jupyter"
     ]
 }
