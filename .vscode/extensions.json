@@ -1,12 +1,7 @@
 {
     "recommendations": [
-        "visualstudioexptteam.vscodeintellicode",
-        "visualstudioexptteam.intellicode-api-usage-examples",
-        "ms-python.python",
-        "ms-python.vscode-pylance",
+        "donjayamanne.python-extension-pack",
         "ms-python.black-formatter",
-        "KevinRose.vsc-python-indent",
-        "njpwerner.autodocstring",
         "sourcery.sourcery",
         "ms-toolsai.jupyter"
     ]
