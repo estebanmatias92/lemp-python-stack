@@ -1,0 +1,16 @@
+{
+    // Editor
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+    // Language/Files specific settings
+	"[dockercompose]": {
+		"editor.defaultFormatter": "ms-azuretools.vscode-docker"
+	},
+    "[python]": {
+		"editor.defaultFormatter": "ms-python.black-formatter"
+	},
+
+    // Extensions
+    "prettier.tabWidth": 4,
+	"prettier.useTabs": true
+}
