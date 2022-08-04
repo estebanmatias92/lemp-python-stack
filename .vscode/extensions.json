@@ -1,8 +1,8 @@
 {
     "recommendations": [
         "donjayamanne.python-extension-pack",
+        "visualstudioexptteam.intellicode-api-usage-examples",
         "ms-python.black-formatter",
-        "sourcery.sourcery",
-        "ms-toolsai.jupyter"
+        "sourcery.sourcery"
     ]
 }
