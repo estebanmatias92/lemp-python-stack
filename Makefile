@@ -1,7 +1,7 @@
 # https://earthly.dev/blog/python-makefile/
 # https://gist.github.com/Flushot/5784719
 
-.PHONY: run create_env install update freeze clean
+.PHONY: run create_env install update freeze clean uninstall
 
 # Global Variables
 VENV := venv
@@ -49,6 +49,10 @@ clean:
 	rm -rf $(VENV)
 	
 # Uninstall every package in requirements.txt
-uninstall: $(VENV) 
+uninstall: 
 	$(PIP) uninstall --no-cache-dir -y -r $(REQSFILE)
-	make -s freeze 
+	make -s freeze
+
+# Remove (uninstall) every package and environment and remove cache folders
+remove:
+    if [ -d $(VENV) ]; then make uninstall && make clean; fi
