@@ -1,17 +1,17 @@
 {
-    "build": {
-        "dockerfile": ".docker/Dockerfile",
-        "context": ".."
-    },
-    "customizations": {
-      // Configure properties specific to VS Code.
-      "vscode": {
-        // Add the IDs of extensions you want installed when the container is created.
-        "extensions": [
-          "donjayamanne.python-extension-pack",
-          "visualstudioexptteam.intellicode-api-usage-examples",
-          "ms-python.black-formatter"
-        ]
-      }
+  "build": {
+    "dockerfile": ".docker/Dockerfile",
+    "context": ".."
+  },
+  "customizations": {
+    // Configure properties specific to VS Code.
+    "vscode": {
+      // Add the IDs of extensions you want installed when the container is created.
+      "extensions": [
+        "donjayamanne.python-extension-pack",
+        "visualstudioexptteam.intellicode-api-usage-examples",
+        "ms-python.black-formatter"
+      ]
     }
   }
+}
