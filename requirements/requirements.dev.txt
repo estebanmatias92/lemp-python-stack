@@ -3,3 +3,4 @@ pylint
 pycodestyle
 pipreqs
 black
+autopep8

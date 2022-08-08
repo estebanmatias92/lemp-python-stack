@@ -1,7 +1,7 @@
 # https://earthly.dev/blog/python-makefile/
 # https://gist.github.com/Flushot/5784719
 
-.PHONY: run create_env install update freeze clean uninstall
+.PHONY: run create_env install update freeze clean uninstall remove
 
 # Global Variables
 VENV := venv
@@ -36,8 +36,9 @@ install:
 # Dinamically update requirements.txt base on imported modules in .py files, update .txt list and upgrade every package to it's latest version
 update:
 	. $(VENVACTIVATE) && pipreqs --force
+	. $(VENVACTIVATE) && $(PIP) install -U -r $(REQSFILE) && $(PIP) install -U -r ./requirements/*
 	make -s freeze
-	. $(VENVACTIVATE) && $(PIP) install -U -r $(REQSFILE)
+	. $(VENVACTIVATE) && $(PIP) list
 
 # Update requirements.txt file with all the dependencies installed in the environment
 freeze:
@@ -55,4 +56,4 @@ uninstall:
 
 # Remove (uninstall) every package and environment and remove cache folders
 remove:
-    if [ -d $(VENV) ]; then make uninstall && make clean; fi
+	if [ -d $(VENV) ]; then make uninstall; make clean; fi

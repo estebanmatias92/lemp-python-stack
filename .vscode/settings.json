@@ -7,8 +7,27 @@
 		"editor.defaultFormatter": "ms-azuretools.vscode-docker"
 	},
     "[python]": {
-		"editor.defaultFormatter": "ms-python.black-formatter"
+		"editor.defaultFormatter": "ms-python.black-formatter",
+        //"editor.defaultFormatter": "ms-python.python",
+        "editor.formatOnPaste": false,
+        "editor.formatOnSaveMode": "file"
 	},
+
+    // Set defaultFormatter to "ms-python.python" to change the provider to "autopep8" 
+    // or "black".
+    // Or set the provider to "none" to change the default.Formatter to "ms-pytho.black-formatter"
+    /*"python.formatting.provider": "black",
+    "python.formatting.provider": "none",
+    
+    "python.formatting.autopep8Path": "venv/bin/autopep8",
+    "python.formatting.autopep8Args": ["--max-line-length", "80", "--experimental"],
+    
+    "python.formatting.blackPath": "venv/bin/black",
+    "python.formatting.blackArgs": ["--line-length", "80"],
+    
+    "python.formatting.yapfPath": "venv/bin/yapf",
+    "python.formatting.yapfArgs": ["--max-line-length", "80"],
+    */
 
     // Extensions
     "prettier.tabWidth": 4,
