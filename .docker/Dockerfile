@@ -1,12 +1,12 @@
 #The base image for the container 
-FROM python:3.8-slim-bullseye AS base
+FROM python:3 AS base
 
-RUN apt-get update -qqy && \
-    apt-get install -qqy python3-dev \
-                python3-venv \
-                python3-pip \
-                git && \
-    apt-get upgrade -qqy
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        git \
+        python3-dev \
+        python3-pip \
+        python3-venv \
+    && apt-get clean
 
 # Get the default Docker Dev Environment HOME directory name
 ENV DOCKERDEVENVDIRECTORY="/com.docker.devenvironments.code"
@@ -18,7 +18,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1 
 
 
-FROM base AS dev
+FROM base AS vscode
 
 # Change user
 ENV MYUSERNAME="vscode"
