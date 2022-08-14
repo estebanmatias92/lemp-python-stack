@@ -3,6 +3,7 @@
         "donjayamanne.python-extension-pack",
         "visualstudioexptteam.intellicode-api-usage-examples",
         "ms-python.black-formatter",
-        "sourcery.sourcery"
+        "sourcery.sourcery",
+        "almenon.arepl"
     ]
 }
