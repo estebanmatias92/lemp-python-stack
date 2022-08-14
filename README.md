@@ -48,6 +48,10 @@ Uninstall all the environment packages
 
 *`make uninstall`*
 
+Or you can uninstall and remove folders and cache in one step
+
+*`make remove`*
+
 
 
 ## Clarifications
