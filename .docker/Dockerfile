@@ -1,15 +1,12 @@
 #The base image for the container 
 FROM python:3 AS base
 
+# Install base libraries
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        git \
         python3-dev \
         python3-pip \
         python3-venv \
     && apt-get clean
-
-# Get the default Docker Dev Environment HOME directory name
-ENV DOCKERDEVENVDIRECTORY="/com.docker.devenvironments.code"
 
 # Keeps Python from generating .pyc files in the container 
 ENV PYTHONDONTWRITEBYTECODE=1 
@@ -19,6 +16,14 @@ ENV PYTHONUNBUFFERED=1
 
 
 FROM base AS vscode
+
+# Install dev tools
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        git \
+    && apt-get clean
+
+# Get the default Docker Dev Environment HOME directory name
+ENV DOCKERDEVENVDIRECTORY="/com.docker.devenvironments.code"
 
 # Change user
 ENV MYUSERNAME="vscode"
