@@ -3,7 +3,6 @@ FROM python:3 AS base
 
 # Install base libraries
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        python3-dev \
         python3-pip \
         python3-venv \
     && apt-get clean
@@ -20,6 +19,7 @@ FROM base AS vscode
 # Install dev tools
 RUN apt-get update && apt-get install -y --no-install-recommends \
         git \
+        python3-dev \
     && apt-get clean
 
 # Get the default Docker Dev Environment HOME directory name
