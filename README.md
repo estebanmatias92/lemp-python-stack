@@ -1,4 +1,4 @@
-# Python Docker Dev Environment
+## Python Docker Dev Environment
 
 An isolated Docker Development Environment for building Python Apps.
 
@@ -22,11 +22,11 @@ Proceed to install the first dependencies
 
 *`pip install -r requirements.txt`*
 
-#### (Running all together with Make)
+#### (The way to go)
 
 You can save time and effort and use Make to create the project and install the dependencies, and activate the environment immediately afterwards
 
-*`make && . venv/bin/activate`*
+*`make build && . venv/bin/activate`*
 
 To run the app, use Make Run
 
@@ -36,21 +36,9 @@ Auto-install imported packages and upgrade all packages
 
 *`make update`*
 
-To manually update the requirements.txt file with the latest packages use Make Freeze
+Use help for more commands
 
-*`make freeze`*
-
-If you need to remove cache files or the environment use Make Clean
-
-*`make clean`*
-
-Uninstall all the environment packages
-
-*`make uninstall`*
-
-Or you can uninstall and remove folders and cache in one step
-
-*`make remove`*
+*`make help`*
 
 
 

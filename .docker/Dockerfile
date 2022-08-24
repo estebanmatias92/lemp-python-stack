@@ -14,13 +14,19 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1 
 
 
-FROM base AS vscode
+
+FROM base AS dev
 
 # Install dev tools
 RUN apt-get update && apt-get install -y --no-install-recommends \
         git \
         python3-dev \
-    && apt-get clean
+        cookiecutter \
+    && apt-get clean \ 
+
+
+
+FROM base AS vscode
 
 # Get the default Docker Dev Environment HOME directory name
 ENV DOCKERDEVENVDIRECTORY="/com.docker.devenvironments.code"
