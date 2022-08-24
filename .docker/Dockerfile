@@ -13,7 +13,9 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Turns off buffering for easier container logging 
 ENV PYTHONUNBUFFERED=1 
 
-
+#
+# DEV STAGE
+#
 
 FROM base AS dev
 
@@ -21,12 +23,13 @@ FROM base AS dev
 RUN apt-get update && apt-get install -y --no-install-recommends \
         git \
         python3-dev \
-        cookiecutter \
-    && apt-get clean \ 
+    && apt-get clean 
 
+#
+# VSCODE STAGE
+#
 
-
-FROM base AS vscode
+FROM dev AS vscode
 
 # Get the default Docker Dev Environment HOME directory name
 ENV DOCKERDEVENVDIRECTORY="/com.docker.devenvironments.code"
