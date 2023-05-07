@@ -1,0 +1,11 @@
+name: vanilla-python
+services:
+  app:
+    build:
+      context: .
+      target: development
+    init: true
+    volumes:
+    - type: bind
+      source: /var/run/docker.sock
+      target: /var/run/docker.sock

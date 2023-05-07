@@ -1,0 +1,6 @@
+name: vanilla-python
+services:
+  app:
+    build:
+      context: .
+    init: true
