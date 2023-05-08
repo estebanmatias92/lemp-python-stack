@@ -10,10 +10,6 @@ ENV PYTHONUNBUFFERED=1
 # Development dependencies
 #
 FROM base AS devdeps
-# Modifyble through cli args
-ARG WORKDIR
-ARG USER
-ARG VENVPATH
 # Install dev tools
 RUN apt-get update && apt-get install -y --no-install-recommends \
         git \
@@ -35,7 +31,10 @@ RUN pip install --user --no-cache-dir -r requirements.txt
 # (This is preferred to run as a Docker Dev Environment)
 #
 FROM devdeps AS development
-
+# Modifyble through cli args
+ARG WORKDIR
+ARG USER
+ARG VENVPATH
 # Create and change user
 RUN useradd -s /bin/bash -m $USER \
     && groupadd docker \
