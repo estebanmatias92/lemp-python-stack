@@ -33,6 +33,7 @@ RUN pip install --user --no-cache-dir -r requirements.txt
 FROM devdeps AS development
 # Modifyble through cli args
 ARG WORKDIR
+ARG VENVPATH
 ARG USER="vscode"
 # Create and change user
 RUN useradd -s /bin/bash -m $USER \
@@ -43,7 +44,7 @@ USER $USER
 COPY --chown=$USER entrypoint.sh $WORKDIR/
 COPY --chown=$USER bin $WORKDIR/
 # Add bin directories to PATH
-ENV PATH=$HOME/.local/bin:$HOME/bin:$VENVPATH/bin:$PATH
+ENV PATH=$HOME/.local/bin:$HOME/bin:$WORKDIR/bin:$VENVPATH/bin:$PATH
 # Replace the host SSH exe with the WSL distro SSH exe
 RUN git config --global --replace-all core.sshCommand "/usr/bin/ssh"
 # Keep the container alive
