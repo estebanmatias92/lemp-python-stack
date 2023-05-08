@@ -42,11 +42,11 @@ USER $USER
 # Get the build script commands added to the shell session
 COPY --chown=$USER entrypoint.sh $WORKDIR/
 COPY --chown=$USER bin $WORKDIR/
-# Add bin directories to PATH
-#ENV PATH=$HOME/.local/bin:$HOME/bin:$WORKDIR/bin:$VENVPATH/bin:$PATH
-RUN echo "\n# Add script for building\nexport PATH=$PATH:$HOME/bin:$HOME/.local/bin:$ROOTDIR/bin:$VENVPATH/bin" >> $HOME/.bashrc \
 # Replace the host SSH exe with the WSL distro SSH exe
-    && git config --global --replace-all core.sshCommand "/usr/bin/ssh"
+RUN git config --global --replace-all core.sshCommand "/usr/bin/ssh"
+# Add bin directories to PATH
+RUN echo "\n# Updating the PATH with project's-specific bin folders\nexport PATH=$PATH:$HOME/bin:$HOME/.local/bin:$ROOTDIR/bin:$VENVPATH/bin" >> $HOME/.bashrc
+#ENV PATH=$HOME/.local/bin:$HOME/bin:$WORKDIR/bin:$VENVPATH/bin:$PATH
 # Keep the container alive
 CMD ["sleep", "infinity"]
 
