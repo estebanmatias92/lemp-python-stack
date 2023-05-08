@@ -46,6 +46,9 @@ RUN useradd -s /bin/bash -m $USER \
 USER $USER
 # Add bin directories to PATH
 ENV PATH=$HOME/.local/bin:$HOME/bin:$WORKDIR/env/bin:$PATH
+# Get the build script commands added to the shell session
+COPY --chown=$USER entrypoint.sh $WORKDIR/
+RUN echo "\n# Add entrypoint to run the app\n. ${WORKDIR}/entrypoint.sh" >> $HOME/.bashrc
 # Replace the host SSH exe with the WSL distro SSH exe
 RUN git config --global --replace-all core.sshCommand "/usr/bin/ssh"
 # Keep the container alive
