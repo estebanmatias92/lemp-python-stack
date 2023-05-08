@@ -39,11 +39,11 @@ RUN useradd -s /bin/bash -m $USER \
     && groupadd docker \
     && usermod -aG docker $USER
 USER $USER
-# Add bin directories to PATH
-ENV PATH=$HOME/.local/bin:$HOME/bin:$VENVPATH/bin:$PATH
 # Get the build script commands added to the shell session
 COPY --chown=$USER entrypoint.sh $WORKDIR/
 COPY --chown=$USER bin $WORKDIR/
+# Add bin directories to PATH
+ENV PATH=$HOME/.local/bin:$HOME/bin:$VENVPATH/bin:$PATH
 # Replace the host SSH exe with the WSL distro SSH exe
 RUN git config --global --replace-all core.sshCommand "/usr/bin/ssh"
 # Keep the container alive
