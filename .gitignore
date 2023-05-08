@@ -183,4 +183,5 @@ cython_debug/
 
 # TO DO
 # Non finished script 
+!/.env
 !/bin/lib
