@@ -8,3 +8,4 @@ services:
         - WORKDIR=${WORKDIR}
         - VENVPATH=${VENVPATH}
         - USER=${USER}
+    env_file: .env

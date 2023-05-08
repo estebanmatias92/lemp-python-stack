@@ -7,8 +7,8 @@
 # Source and Binary paths
 BINPATH="${VENVDIR}/bin"
 # Dependency file paths
-REQSDEVPATH="${ROOTDIR}/requirements"
-REQSFILE="${ROOTDIR}/requirements.txt"
+REQSDEVPATH="${WORKDIR}/requirements"
+REQSFILE="${WORKDIR}/requirements.txt"
 # Cache
 CACHEDIR="${SRCDIR}/__pycache__"
 
@@ -91,7 +91,7 @@ export -f sub_create_env
 # Run the program from the entrypoint with the isolated python binary
 #
 sub_run() {
-    .${ROOTDIR}/entrypoint.sh
+    .${WORKDIR}/entrypoint.sh
 }
 export -f sub_run
 
