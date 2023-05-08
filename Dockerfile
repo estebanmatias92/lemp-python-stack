@@ -1,10 +1,5 @@
 #The base image for the container 
 FROM python:3.9 AS base
-# Install base libraries
-RUN apt-get update && apt-get install -y --no-install-recommends \
-        python3-pip \
-        python3-venv \
-    && apt-get clean
 # Keeps Python from generating .pyc files in the container 
 ENV PYTHONDONTWRITEBYTECODE=1  
 # Turns off buffering for easier container logging 
@@ -28,7 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 FROM base as builder
 COPY requirements.txt .
 # Install dependencies to the local user directory (eg. /root/.local)
-RUN pip install --user -r requirements.txt
+RUN pip install --user --no-cache-dir -r requirements.txt
 
 
 #
@@ -45,10 +40,10 @@ RUN useradd -s /bin/bash -m $USER \
     && usermod -aG docker $USER
 USER $USER
 # Add bin directories to PATH
-ENV PATH=$HOME/.local/bin:$HOME/bin:$WORKDIR/env/bin:$PATH
+ENV PATH=$HOME/.local/bin:$HOME/bin:$VENVPATH/bin:$PATH
 # Get the build script commands added to the shell session
 COPY --chown=$USER entrypoint.sh $WORKDIR/
-RUN echo "\n# Add entrypoint to run the app\n. ${WORKDIR}/entrypoint.sh" >> $HOME/.bashrc
+COPY --chown=$USER bin $WORKDIR/
 # Replace the host SSH exe with the WSL distro SSH exe
 RUN git config --global --replace-all core.sshCommand "/usr/bin/ssh"
 # Keep the container alive

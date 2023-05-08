@@ -1,0 +1,187 @@
+#!/bin/bash
+
+
+#
+# Constants
+#
+# Source and Binary paths
+BINPATH="${VENVDIR}/bin"
+# Dependency file paths
+REQSDEVPATH="${ROOTDIR}/requirements"
+REQSFILE="${ROOTDIR}/requirements.txt"
+# Cache
+CACHEDIR="${SRCDIR}/__pycache__"
+
+#
+# Preparing aliases for the virtual environment binaries
+#
+# Alias for virtual environment "pip"
+__pip() {
+    "$BINPATH/pip --require-virtualenv $@"
+    #pip
+}
+
+# Alias for virtual environment "pithon"
+__python() {
+    "${BINPATH}/python $@"
+    #python
+}
+
+# Alias for virtual environment "activate"
+__venv_activate() {
+    source .${BINPATH}/activate "$@"
+}
+
+
+#
+# Usage data display
+#
+sub_help() {
+    # Colors
+    local GREEN=$(tput -Txterm setaf 2)
+    local YELLOW=$(tput -Txterm setaf 3)
+    local WHITE=$(tput -Txterm setaf 7)
+    local RESET=$(tput -Txterm sgr0)
+
+    # Alias
+    local command=${YELLOW}${progname}${RESET}
+
+    # Displaying the message
+    echo ""
+    echo "Usage:"
+    echo "    ${command} <command>"
+    echo ""
+    echo "Commands:"
+    echo "    build           Create the environment, installs the dependencies required and start the program"
+    echo "    create_env      Create an isolated python environment (${VENVPATH}) with pip"
+    echo "    run             Run the program from the entrypoint with the isolated python binary"
+    echo "    install         Install locally, the lastest version of depdendencies and update the requirements.txt file"
+    echo "    update          Update the requirements.txt with modules imported in the project and updates all dependencies and reqs file"
+    echo "    freeze          Update the requirements.txt file with the dependencies at the moment"
+    echo "    clean           Remove __pycache__ and environment folders and files"
+    echo "    uninstall       Uninstall all the environments and update the requirements.txt"
+    echo "    remove          Runs '${command} uninstall && ${command} clean' at once"
+    echo ""
+}
+export -f sub_help
+
+
+#
+# Create an isolated python environment (${VENVPATH}) with pip"
+#
+sub_build() {
+    sub_create_env
+    sub_install
+    sub_run
+}
+export -f sub_build
+
+
+#
+# Create local python environment with pip
+#
+sub_create_env() {
+    python3 -m pip install --upgrade pip
+    python3 -m venv $VENVPATH
+}
+export -f sub_create_env
+
+
+#
+# Run the program from the entrypoint with the isolated python binary
+#
+sub_run() {
+    .${ROOTDIR}/entrypoint.sh
+}
+export -f sub_run
+
+
+#
+# Does three operations ar once
+#
+sub_install_update_freeze() {
+    __pip install -U -r $REQSFILE && __pip install -U -r $REQSDEVPATH/* \
+    && sub_freeze \
+    && __pip list 
+}
+
+
+#
+# Install locally, the lastest version of depdendencies and update the requirements.txt file
+#
+sub_install() {
+    __python -m pip install --upgrade pip \
+        && __venv_activate && __pip install pipreqs \
+        && sub_install_update_freeze
+}
+export -f sub_install
+
+
+#
+# Update the requirements.txt with modules imported in the project and updates all dependencies and reqs file
+#
+sub_update() {
+    __venv_activate && pipreqs --force \
+        && sub_install_update_freeze
+}
+export -f sub_update
+
+
+#
+# Update the requirements.txt file with the dependencies at the moment
+#
+sub_freeze() {
+    __venv_activate && __pip freeze > $REQSFILE
+}
+export -f sub_freeze
+
+
+#
+# Remove __pycache__ and environment folders and files
+#
+sub_clean() {
+    # Directory list
+    local dirlist=($CACHEDIR $VENVPATH)
+
+    # Iterate over the list and try to remove the directories
+    for element in "${dirlist[@]}"; do
+        if [ -d $element ]; then
+            rm -rf $element
+            echo "${element} removed."
+        else
+            echo "Error: ${element} doesn't exists."
+        fi
+    done
+}
+export -f sub_clean
+
+
+#
+# Uninstall all the environments and update the requirements.txt
+#
+sub_uninstall() {
+    __pip uninstall --no-cache-dir -y -r $REQSFILE
+    sub_freeze
+    echo "Everything is uninstalled."
+}
+export -f sub_uninstall
+
+
+#
+# Runs '${command} uninstall && ${command} clean' at once"
+#
+sub_remove() {
+    if [ "${VENVPATH}" != "" -a -d "${VENVPATH}" ]; then
+        sub_uninstall
+        sub_clean
+    else
+        echo "Error: Nothing to uninstall or remove."
+    fi
+}
+export -f sub_remove
+
+
+#
+# Entrypoint for this script when it's called
+#
+. "`dirname $0`"/lib/runsub "$@"

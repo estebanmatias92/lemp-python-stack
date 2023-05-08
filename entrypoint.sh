@@ -1,2 +1,4 @@
+#!/bin/sh
+
 # Calling entrypoint with the current python executable
-$PYTHON ./src/app.py
+"${VENVPATH}/bin/python3 ./src/app.py"
