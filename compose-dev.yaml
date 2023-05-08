@@ -6,6 +6,6 @@ services:
       target: development
       args:
         - WORKDIR=${WORKDIR}
-        - VENVPATH=${VENVPATH}
         - USER=${USER}
+        - VENVPATH=${VENVPATH}
     env_file: .env
