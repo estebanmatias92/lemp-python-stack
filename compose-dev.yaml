@@ -4,6 +4,7 @@ services:
     build:
       context: .
       target: development
+    env_file: .env.dev
     init: true
     volumes:
     - type: bind

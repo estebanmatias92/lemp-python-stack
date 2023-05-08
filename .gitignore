@@ -14,6 +14,10 @@
 # Built Visual Studio Code Extensions
 *.vsix
 
+# TO DO
+# Non finished script 
+entrypoint.sh
+script.sh
 
 
 #####################

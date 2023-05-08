@@ -4,13 +4,8 @@
 .PHONY: run create_env install update freeze clean uninstall remove
 
 # Global Variables
-VENV := venv
-PYTHON := $(VENV)/bin/python3
-#PYTHON := python3
-PIP := $(VENV)/bin/pip --require-virtualenv
-#PIP := pip
-VENVACTIVATE := $(VENV)/bin/activate
 REQSFILE := requirements.txt
+DEVREQUISITES_DIR := ./requirements
 
 # COLORS
 GREEN  := $(shell tput -Txterm setaf 2)
@@ -45,7 +40,7 @@ build: create_env install run
 
 # Run the root script
 run:
-	$(PYTHON) app.py
+	./entrypoint.sh
 
 
 # Upgrade pip and create new python environment
@@ -57,18 +52,18 @@ create_env:
 # Upgrade pip, install pipreqs and the install every dependency in the project and update the requirements.txt file
 install:
 	./$(PYTHON) -m pip install --upgrade pip
-	. $(VENVACTIVATE) && $(PIP) install pipreqs
-	. $(VENVACTIVATE) && $(PIP) install -U -r $(REQSFILE) && $(PIP) install -U -r ./requirements/*
-	make -s freeze
-	. $(VENVACTIVATE) && $(PIP) list
+	. $(VENVACTIVATE) && $(PIP) install pipreqs \
+		&& $(PIP) install -U -r $(REQSFILE) && $(PIP) install -U -r $(DEVREQUISITES_DIR)/* \
+		&& make -s freeze \
+		&& $(PIP) list
 
 
 # Dinamically update requirements.txt base on imported modules in .py files, update .txt list and upgrade every package to it's latest version
 update:
-	. $(VENVACTIVATE) && pipreqs --force
-	. $(VENVACTIVATE) && $(PIP) install -U -r $(REQSFILE) && $(PIP) install -U -r ./requirements/*
-	make -s freeze
-	. $(VENVACTIVATE) && $(PIP) list
+	. $(VENVACTIVATE) && pipreqs --force \
+		&& $(PIP) install -U -r $(REQSFILE) && $(PIP) install -U -r $(DEVREQUISITES_DIR)/* \
+		&& make -s freeze \
+		&& $(PIP) list \
 
 # Update requirements.txt file with all the dependencies installed in the environment
 freeze:
