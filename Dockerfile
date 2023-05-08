@@ -32,8 +32,8 @@ RUN pip install --user --no-cache-dir -r requirements.txt
 #
 FROM devdeps AS development
 # Modifyble through cli args
-ARG WORKDIR
-ARG VENVPATH
+ARG WORKDIR=${WORKDIR}
+ARG VENVPATH=${VENVPATH}
 ARG USER="vscode"
 # Create and change user
 RUN useradd -s /bin/bash -m $USER \
