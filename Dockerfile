@@ -32,7 +32,7 @@ RUN pip install --user --no-cache-dir -r requirements.txt
 #
 FROM devdeps AS development
 # Modifyble through cli args
-ARG WORKDIR=/com.docker.devenvironments.code
+ARG WORKDIR
 ARG USER="vscode"
 # Create and change user
 RUN useradd -s /bin/bash -m $USER \
