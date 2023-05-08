@@ -5,8 +5,4 @@ services:
     build:
       context: .
       target: development
-      args:
-        - WORKDIR=${WORKDIR}
-        - USER=${USER}
-        - VENVPATH=${VENVPATH}
     env_file: .env
