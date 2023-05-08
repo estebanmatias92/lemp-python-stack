@@ -16,7 +16,7 @@ Once created the Environment, open it with VS Code
 
 Now from the terminal you can run the Python CLI commands and create with a new environment
 
-*`python -m venv venv && . venv/bin/activate`*
+*`python -m venv src/venv && . src/venv/bin/activate`*
 
 Proceed to install the first dependencies
 
@@ -26,19 +26,19 @@ Proceed to install the first dependencies
 
 You can save time and effort and use Make to create the project and install the dependencies, and activate the environment immediately afterwards
 
-*`make build && . venv/bin/activate`*
+*`pipe build && . src/venv/bin/activate`*
 
 To run the app, use Make Run
 
-*`make run`*
+*`pipe run`*
 
 Auto-install imported packages and upgrade all packages
 
-*`make update`*
+*`pipe update`*
 
 Use help for more commands
 
-*`make help`*
+*`pipe help`*
 
 
 
