@@ -4,7 +4,4 @@ services:
     build:
       context: .
       target: development
-      args:
-        - WORKDIR=${ROOTDIR}
-        - VENVPATH=${VENVPATH}
     env_file: .env.dev
