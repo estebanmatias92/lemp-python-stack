@@ -1,36 +1,15 @@
 #!/bin/bash
 
-
 #
 # Constants
 #
 # Source and Binary paths
-BINPATH="${VENVDIR}/bin"
+BINPATH="${VENVPATH}/bin"
 # Dependency file paths
 REQSDEVPATH="${ROOTDIR}/requirements"
-REQSFILE="${ROOTDIR}/requirements.txt"
+REQSFILE="requirements.txt"
 # Cache
 CACHEDIR="${SRCDIR}/__pycache__"
-
-#
-# Preparing aliases for the virtual environment binaries
-#
-# Alias for virtual environment "pip"
-__pip() {
-    "$BINPATH/pip --require-virtualenv $@"
-    #pip
-}
-
-# Alias for virtual environment "pithon"
-__python() {
-    "${BINPATH}/python $@"
-    #python
-}
-
-# Alias for virtual environment "activate"
-__venv_activate() {
-    source .${BINPATH}/activate "$@"
-}
 
 
 #
@@ -81,6 +60,7 @@ export -f __manager_sub_build
 # Create local python environment with pip
 #
 __manager_sub_create_env() {
+    echo "Creating virtual environment"
     python3 -m pip install --upgrade pip
     python3 -m venv $VENVPATH
 }
@@ -91,7 +71,7 @@ export -f __manager_sub_create_env
 # Run the program from the entrypoint with the isolated python binary
 #
 __manager_sub_run() {
-    .${ROOTDIR}/entrypoint.sh
+    "${ROOTDIR}/entrypoint.sh"
 }
 export -f __manager_sub_run
 
@@ -100,9 +80,9 @@ export -f __manager_sub_run
 # Does three operations ar once
 #
 __manager_sub_install_update_freeze() {
-    __pip install -U -r $REQSFILE && __pip install -U -r $REQSDEVPATH/* \
+    (. activate && pip install -U -r $REQSFILE && pip install -U -r $REQSDEVPATH/*) \
     && __manager_sub_freeze \
-    && __pip list 
+    && (. activate && pip list) 
 }
 
 
@@ -110,8 +90,9 @@ __manager_sub_install_update_freeze() {
 # Install locally, the lastest version of depdendencies and update the requirements.txt file
 #
 __manager_sub_install() {
-    __python -m pip install --upgrade pip \
-        && __venv_activate && __pip install pipreqs \
+    echo "Installing dependencies"
+    python -m pip install --upgrade pip \
+        && (. activate && pip install pipreqs) \
         && __manager_sub_install_update_freeze
 }
 export -f __manager_sub_install
@@ -121,8 +102,11 @@ export -f __manager_sub_install
 # Update the requirements.txt with modules imported in the project and updates all dependencies and reqs file
 #
 __manager_sub_update() {
-    __venv_activate && pipreqs --force \
+    echo "Updating dependencies"
+    (. activate && python -m pip install --upgrade pip \
+        && pipreqs --force) \
         && __manager_sub_install_update_freeze
+    
 }
 export -f __manager_sub_update
 
@@ -131,7 +115,7 @@ export -f __manager_sub_update
 # Update the requirements.txt file with the dependencies at the moment
 #
 __manager_sub_freeze() {
-    __venv_activate && __pip freeze > $REQSFILE
+    (. activate && pip freeze > $REQSFILE)
 }
 export -f __manager_sub_freeze
 
@@ -140,6 +124,7 @@ export -f __manager_sub_freeze
 # Remove __pycache__ and environment folders and files
 #
 __manager_sub_clean() {
+    echo "Removing venv cache files and folders"
     # Directory list
     local dirlist=($CACHEDIR $VENVPATH)
 
@@ -148,8 +133,6 @@ __manager_sub_clean() {
         if [ -d $element ]; then
             rm -rf $element
             echo "${element} removed."
-        else
-            echo "Error: ${element} doesn't exists."
         fi
     done
 }
@@ -160,9 +143,14 @@ export -f __manager_sub_clean
 # Uninstall all the environments and update the requirements.txt
 #
 __manager_sub_uninstall() {
-    __pip uninstall --no-cache-dir -y -r $REQSFILE
-    __manager_sub_freeze
-    echo "Everything is uninstalled."
+    if [ -s $REQSFILE ]; then
+        echo "Uninstalling all dependencies"
+        
+        (. activate && pip uninstall --no-cache-dir -y -r $REQSFILE)
+        __manager_sub_freeze
+        
+        echo "Everything is uninstalled."
+    fi
 }
 export -f __manager_sub_uninstall
 
@@ -175,7 +163,7 @@ __manager_sub_remove() {
         __manager_sub_uninstall
         __manager_sub_clean
     else
-        echo "Error: Nothing to uninstall or remove."
+        echo "ERROR: Nothing to uninstall or remove."
     fi
 }
 export -f __manager_sub_remove

@@ -26,7 +26,7 @@ Proceed to install the first dependencies
 
 You can save time and effort and use Make to create the project and install the dependencies, and activate the environment immediately afterwards
 
-*`pipe build && . src/venv/bin/activate`*
+*`pipe build && ctivate`*
 
 To run the app, use Make Run
 
