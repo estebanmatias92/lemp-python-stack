@@ -36,7 +36,7 @@ __venv_activate() {
 #
 # Usage data display
 #
-sub_help() {
+__manager_sub_help() {
     # Colors
     local GREEN=$(tput -Txterm setaf 2)
     local YELLOW=$(tput -Txterm setaf 3)
@@ -63,45 +63,45 @@ sub_help() {
     echo "    remove          Runs '${command} uninstall && ${command} clean' at once"
     echo ""
 }
-export -f sub_help
+export -f __manager_sub_help
 
 
 #
 # Create an isolated python environment (${VENVPATH}) with pip"
 #
-sub_build() {
-    sub_create_env
-    sub_install
-    sub_run
+__manager_sub_build() {
+    __manager_sub_create_env
+    __manager_sub_install
+    __manager_sub_run
 }
-export -f sub_build
+export -f __manager_sub_build
 
 
 #
 # Create local python environment with pip
 #
-sub_create_env() {
+__manager_sub_create_env() {
     python3 -m pip install --upgrade pip
     python3 -m venv $VENVPATH
 }
-export -f sub_create_env
+export -f __manager_sub_create_env
 
 
 #
 # Run the program from the entrypoint with the isolated python binary
 #
-sub_run() {
+__manager_sub_run() {
     .${ROOTDIR}/entrypoint.sh
 }
-export -f sub_run
+export -f __manager_sub_run
 
 
 #
 # Does three operations ar once
 #
-sub_install_update_freeze() {
+__manager_sub_install_update_freeze() {
     __pip install -U -r $REQSFILE && __pip install -U -r $REQSDEVPATH/* \
-    && sub_freeze \
+    && __manager_sub_freeze \
     && __pip list 
 }
 
@@ -109,37 +109,37 @@ sub_install_update_freeze() {
 #
 # Install locally, the lastest version of depdendencies and update the requirements.txt file
 #
-sub_install() {
+__manager_sub_install() {
     __python -m pip install --upgrade pip \
         && __venv_activate && __pip install pipreqs \
-        && sub_install_update_freeze
+        && __manager_sub_install_update_freeze
 }
-export -f sub_install
+export -f __manager_sub_install
 
 
 #
 # Update the requirements.txt with modules imported in the project and updates all dependencies and reqs file
 #
-sub_update() {
+__manager_sub_update() {
     __venv_activate && pipreqs --force \
-        && sub_install_update_freeze
+        && __manager_sub_install_update_freeze
 }
-export -f sub_update
+export -f __manager_sub_update
 
 
 #
 # Update the requirements.txt file with the dependencies at the moment
 #
-sub_freeze() {
+__manager_sub_freeze() {
     __venv_activate && __pip freeze > $REQSFILE
 }
-export -f sub_freeze
+export -f __manager_sub_freeze
 
 
 #
 # Remove __pycache__ and environment folders and files
 #
-sub_clean() {
+__manager_sub_clean() {
     # Directory list
     local dirlist=($CACHEDIR $VENVPATH)
 
@@ -153,32 +153,32 @@ sub_clean() {
         fi
     done
 }
-export -f sub_clean
+export -f __manager_sub_clean
 
 
 #
 # Uninstall all the environments and update the requirements.txt
 #
-sub_uninstall() {
+__manager_sub_uninstall() {
     __pip uninstall --no-cache-dir -y -r $REQSFILE
-    sub_freeze
+    __manager_sub_freeze
     echo "Everything is uninstalled."
 }
-export -f sub_uninstall
+export -f __manager_sub_uninstall
 
 
 #
 # Runs '${command} uninstall && ${command} clean' at once"
 #
-sub_remove() {
+__manager_sub_remove() {
     if [ "${VENVPATH}" != "" -a -d "${VENVPATH}" ]; then
-        sub_uninstall
-        sub_clean
+        __manager_sub_uninstall
+        __manager_sub_clean
     else
         echo "Error: Nothing to uninstall or remove."
     fi
 }
-export -f sub_remove
+export -f __manager_sub_remove
 
 
 #
