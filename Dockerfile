@@ -44,7 +44,6 @@ COPY --chown=$USER *.sh $WORKDIR/
 COPY --chown=$USER bin $WORKDIR/
 # Add bin directories to PATH
 RUN echo "\n# Add scripts for dev workflow\n. ${WORKDIR}/script.sh" >> $HOME/.bashrc 
-#ENV PATH=$HOME/.local/bin:$HOME/bin:$WORKDIR/bin:$VENVPATH/bin:$PATH
 # Replace the host SSH exe with the WSL distro SSH exe
 RUN git config --global --replace-all core.sshCommand "/usr/bin/ssh"
 # Keep the container alive
@@ -62,4 +61,5 @@ COPY --from=builder /root/.local /root/.local
 COPY ./src .
 # Update PATH environment variable
 ENV PATH=/root/.local:$PATH
-CMD [ "python", "./app.py" ]
+ENTRYPOINT [ "python3" ]
+CMD [ "./app.py" ]
