@@ -41,9 +41,10 @@ RUN useradd -s /bin/bash -m $USER \
 USER $USER
 # Change directory
 WORKDIR ${WORKDIR}
-RUN pwd
 # Get the build script commands added to the shell session
 COPY --chown=$USER .dotfiles .
+RUN ls -la .
+RUN ls -la ./.dotfiles
 # Add bin directories to PATH
 RUN cat ./.dotfiles/.bash_profile >> $HOME/.bash_profile \
     cat ./.dotfiles/.bashrc >> $HOME/.bashrc 
