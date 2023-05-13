@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Constants
+VENVPATH=$WORKDIR/$VENV
+
 # Updating the PATH with project's-specific bin folders
 export PATH=$HOME/.local/bin:$VENVPATH/bin:$PATH
 
@@ -11,7 +14,7 @@ create_env() {
 
 # Use entrypoint.sh to run the app with whatever command you need
 run() {
-    ./entrypoint.sh
+    ${WORKDIR}/entrypoint.sh
 }
 
 # Aliases
