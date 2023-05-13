@@ -39,14 +39,12 @@ RUN useradd -s /bin/bash -m $USER \
     && groupadd docker \
     && usermod -aG docker $USER
 USER $USER
-WORKDIR $WORKDIR
 # Get the build script commands added to the shell session
-COPY --chown=$USER .dotfiles .
+COPY --chown=$USER *.sh $WORKDIR
 # Replace the host SSH exe with the WSL distro SSH exe
 RUN git config --global --replace-all core.sshCommand "/usr/bin/ssh"
-# Add bin directories to PATH
-RUN cat .bash_profile >> $HOME/.bash_profile \
-    && cat .bashrc >> $HOME/.bashrc
+# Add scripts to .bashrc
+RUN echo "\n# Add scripts for dev workflow\n. ${WORKDIR}/script.sh" >> $HOME/.bashrc 
 # Keep the container alive
 CMD ["sleep", "infinity"]
 
