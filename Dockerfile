@@ -41,7 +41,7 @@ RUN useradd -s /bin/bash -m $USER \
 USER $USER
 WORKDIR $WORKDIR
 # Get the build script commands added to the shell session
-COPY --chown=$USER .dotfiles ./
+COPY --chown=$USER .dotfiles .
 # Replace the host SSH exe with the WSL distro SSH exe
 RUN git config --global --replace-all core.sshCommand "/usr/bin/ssh"
 # Add bin directories to PATH
