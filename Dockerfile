@@ -45,8 +45,8 @@ COPY --chown=$USER .dotfiles .
 # Replace the host SSH exe with the WSL distro SSH exe
 RUN git config --global --replace-all core.sshCommand "/usr/bin/ssh"
 # Add bin directories to PATH
-RUN "cat .bash_profile >> $HOME/.bash_profile \
-    cat .bashrc >> $HOME/.bashrc" 
+RUN "cat ./.bash_profile >> $HOME/.bash_profile \
+    cat ./.bashrc >> $HOME/.bashrc" 
 # Keep the container alive
 CMD ["sleep", "infinity"]
 
