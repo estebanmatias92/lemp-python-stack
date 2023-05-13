@@ -44,8 +44,8 @@ WORKDIR ${WORKDIR}
 # Get the build script commands added to the shell session
 COPY --chown=$USER .dotfiles .
 # Add bin directories to PATH
-RUN cat .dotfiles/.bash_profile >> $HOME/.bash_profile \
-    cat .dotfiles/.bashrc >> $HOME/.bashrc 
+RUN cat ./.dotfiles/.bash_profile >> $HOME/.bash_profile \
+    cat ./.dotfiles/.bashrc >> $HOME/.bashrc 
 # Replace the host SSH exe with the WSL distro SSH exe
 RUN git config --global --replace-all core.sshCommand "/usr/bin/ssh"
 # Keep the container alive
