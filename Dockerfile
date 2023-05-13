@@ -40,7 +40,7 @@ RUN useradd -s /bin/bash -m $USER \
     && usermod -aG docker $USER
 USER $USER
 # Get the build script commands added to the shell session
-COPY --chown=$USER *.sh $WORKDIR
+COPY --chown=$USER script.sh $WORKDIR
 # Replace the host SSH exe with the WSL distro SSH exe
 RUN git config --global --replace-all core.sshCommand "/usr/bin/ssh"
 # Add scripts to .bashrc

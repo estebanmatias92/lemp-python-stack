@@ -9,8 +9,10 @@ create_env() {
     python3 -m venv $VENVPATH
 }
 
-# And source the app's entrypoint shell script
-. ./entrypoint.sh  >/dev/null 2>&1
+# Use entrypoint.sh to run the app with whatever command you need
+run() {
+    ./entrypoint.sh
+}
 
 # Aliases
 alias activate=". activate"
