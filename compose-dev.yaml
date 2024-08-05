@@ -1,7 +1,20 @@
-name: vanilla-python
+name: dockerized-python
 services:
   app:
     build:
-      context: .
+      context: ./app
       target: development
-    env_file: .env
+      args:
+        - USERNAME=${USER:?error}
+        - PROJECT_ROOT=${PROJECT_ROOT:?error}
+    ports:
+      - 8000:8000
+    working_dir: $PROJECT_ROOT
+    pull_policy: build
+    develop:
+      watch:
+        - action: sync
+          path: ./app
+          target: $PROJECT_ROOT
+      #  - action: rebuild
+      #    path: ./requirements.txt

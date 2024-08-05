@@ -180,8 +180,3 @@ cython_debug/
 
 # Built Visual Studio Code Extensions
 *.vsix
-
-# TO DO
-# Non finished script 
-!/.env
-!/bin/lib

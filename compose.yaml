@@ -1,5 +1,7 @@
-name: vanilla-python
+name: dockerized-python
 services:
   app:
     build:
       context: .
+    ports:
+      - 8000:8000
