@@ -71,7 +71,7 @@ RUN pdm install --check --prod --no-editable
 # Production Target Stage 
 # Normally called without specifying "target" in compose
 #
-FROM python:${PYTHON_BASE}-slim as production
+FROM python:${PYTHON_BASE}-slim AS production
 
 # retrieve packages from build stage
 COPY --from=builder $PROJECT_ROOT/.venv/ $PROJECT_ROOT/.venv
