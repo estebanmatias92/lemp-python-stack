@@ -39,8 +39,12 @@ RUN groupadd --gid $USER_GID $USERNAME \
 # ********************************************************
 
 # Install dev tools [as root]
-RUN --mount=type=cache,target=/var/cache/apt \
-    apt-get update && apt-get install -y python3-dev && apt-get clean
+RUN --mount=type=cache,target=/var/cache/apt apt-get update \
+    && apt-get install -y \
+    python3-dev \
+    default-libmysqlclient-dev \
+    default-mysql-client \
+    && apt-get clean
 
 # [Optional] Set the default user. Omit if you want to keep the default as root.
 USER $USERNAME

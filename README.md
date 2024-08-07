@@ -74,3 +74,25 @@ To use git like you normally do in your host machine, you have to have:
 
 - Docker Desktop **_"WSL 2 based engine"_** option enabled
 - Your **_github credentials_** configured in your default WSL2 distro
+
+
+
+## Temporary help
+
+
+To test the database from "app" service, just enter the bash in the app service
+
+_`docker exec app bash`_
+
+And run the following command yo show all the databases in the db service
+
+_`mysql --user=$DB_USER --password=$(cat $DB_PASS) --host=$DB_HOST --execute="SHOW DATABASES;"`_
+
+
+To test it from the "db" service enter the bash
+
+_`docker exec db bash`_
+
+And run the following command too
+
+_`mysql --user=$MYSQL_USER --password=$(cat $MYSQL_PASSWORD_FILE) --execute "SHOW DATABASES;"`_

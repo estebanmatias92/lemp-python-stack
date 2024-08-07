@@ -1,3 +1,1 @@
-from main.main import *
-
-salute()
+print("Hello World!")
