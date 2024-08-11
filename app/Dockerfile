@@ -50,7 +50,7 @@ RUN --mount=type=cache,target=/var/cache/apt apt-get update \
 USER $USERNAME
 
 # If you want to use watch, first copy the files
-COPY --chown=$USERNAME:$USER_GID ./ $PROJECT_ROOT
+# COPY --chown=$USERNAME:$USER_GID ./ $PROJECT_ROOT
 
 # Keep the container alive
 CMD ["sleep", "infinity"]
