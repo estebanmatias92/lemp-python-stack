@@ -1,4 +1,3 @@
-name: python-stack
 services:
   app:
     build:
@@ -7,9 +6,11 @@ services:
       args:
         - USERNAME=${USER:?error}
         - PROJECT_ROOT=${PROJECT_ROOT:?error}
-    working_dir: $PROJECT_ROOT
     ports:
       - "8000:8000"
+    working_dir: $PROJECT_ROOT
+    volumes:
+      - ./app:$PROJECT_ROOT
     environment:
       - DB_HOST=db                        # Nombre del servicio (tambien IP) que tiene sirve la DB
       - DB_NAME=${DB_NAME}                # Nombre de la base de datos a la que entrar
@@ -22,17 +23,10 @@ services:
     pull_policy: build
     secrets:
       - db-user-pass
-    develop:
-      watch:
-        - action: sync
-          path: ./app
-          target: $PROJECT_ROOT
-      #  - action: rebuild
-      #    path: ./requirements.txt
 
   db:
     image: mysql:5.7
-    restart: always
+    restart: unless-stopped
     expose:
       - "3306"
     environment:
@@ -48,9 +42,6 @@ services:
       - db-user-pass
     healthcheck:
       # Test the status of MySQL
-      #test: ["CMD-SHELL", "mysqladmin ping -h localhost"] # Enter mysqladmin as root without password
-      #test: ["CMD-SHELL", "mysqladmin --user=$$MYSQL_USER --password=$(cat $$MYSQL_PASSWORD_FILE) ping -h localhost"] # Enter mysqladmin with non-root user with password secret
-      #test: ["CMD-SHELL", "mysqladmin -h 127.0.0.1 ping --password=$(cat $$MYSQL_ROOT_PASSWORD_FILE) | grep 'mysqld is alive' || exit 1"]
       test: ["CMD-SHELL", "mysql --user=$$MYSQL_USER --password=$(cat $$MYSQL_PASSWORD_FILE) --execute=\"SHOW DATABASES;\" || exit 1"]
       interval: 10s
       timeout: 5s

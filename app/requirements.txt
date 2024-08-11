@@ -1,6 +1,0 @@
-setuptools
-pylint
-pycodestyle
-black
-autopep8
-pdm
