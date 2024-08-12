@@ -16,7 +16,7 @@ This will start the services, keep the files in sync, watch for rebuilds, and sh
 
 Open another terminal and run:
 
-_`docker compose exec app bash`_
+_`docker compose --env-file .env.dev -f compose-dev.yaml exec app bash`_
 
 This will give you access to the **app** service terminal inside the workdir (project root directory).
 
@@ -24,47 +24,33 @@ This will give you access to the **app** service terminal inside the workdir (pr
 
 Once inside the container you can run PDM commands and create a new project.
 
-_`pdm init`_
+_`pdm init [template]`_
 
-Proceed to install the all dependencies
+You can now dd package(s) to pyproject.toml and install them
 
-_`pip install -r requirements.txt`_
+_`pdm add <package> [packages...]`_
+
+And/Or install dependencies from lock file and resolve paths
+
+_`pdm install [packages...]`_
 
 ### 4 - Tipical pip commands
 
-You can just install one dependency
+To list packages installed in the current working set
 
-_`pip install flask`_
+_`pdm list`_
 
-To list the packages installed
+Resolve and lock dependencies and update the pdm.lock file
 
-_`pip list`_
+_`pdm lock`_
 
-To update the requirements.txt file with the current dependencies installed
+You can also update package(s) in pyproject.toml
 
-_`pip freeze > requirements.txt`_
+_`pdm update [packages...]`_
 
-You can also upgrade the dependencies of this project
+And also remove packages from pyproject.toml
 
-_`pip install -U -r requirements.txt`_
-
-And also uninstall a package
-
-_`pip uninstall flask`_
-
-Or all the packages
-
-_`pip uninstall -r requirements.txt`_
-
-#### (Inside Docker Desktop Dev Environment)
-
-You have an alias to use in replacement for . venv/bin/activate
-
-_`activate`_
-
-You have a function to run the app through an entrypoint
-
-_`run`_
+_`pdm remove <package> [packages...]`_
 
 ## Clarifications
 
@@ -74,8 +60,6 @@ To use git like you normally do in your host machine, you have to have:
 
 - Docker Desktop **_"WSL 2 based engine"_** option enabled
 - Your **_github credentials_** configured in your default WSL2 distro
-
-
 
 ## Temporary help
 
