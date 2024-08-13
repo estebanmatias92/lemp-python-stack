@@ -12,10 +12,10 @@ services:
     volumes:
       - ./app:$PROJECT_ROOT
     environment:
-      - DB_HOST=db                        # Nombre del servicio (tambien IP) que tiene sirve la DB
-      - DB_NAME=${DB_NAME}                # Nombre de la base de datos a la que entrar
-      - DB_USER=user                      # El usuario de para entrar en la DB
-      - DB_PASS=/run/secrets/db-user-pass # Info from the directory where secrets are stored
+      - DB_HOST=db                          # Nombre del servicio (tambien IP) que tiene sirve la DB
+      - DB_NAME=${DB_NAME}                  # Nombre de la base de datos a la que entrar
+      - DB_USER=user                        # El usuario de para entrar en la DB
+      - DB_PASS=/run/secrets/db-user-pass   # Info from the directory where secrets are stored
     depends_on:
       db:
         condition: service_healthy
@@ -25,17 +25,19 @@ services:
       - db-user-pass
 
   db:
-    image: mysql:5.7
+    image: mysql:8.4
+    #image: mysql:5.7
     restart: unless-stopped
+    command: --mysql-native-password=ON
     expose:
       - "3306"
     environment:
-      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-root-pass # Info from the directory where secrets are stored
-      - MYSQL_DATABASE=${DB_NAME}         # Nombre de la base de datos 
-      - MYSQL_USER=user                   # El usuario de para entrar en la DB
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-root-pass    # Info from the directory where secrets are stored
+      - MYSQL_DATABASE=${DB_NAME}                             # Nombre de la base de datos 
+      - MYSQL_USER=user                                       # El usuario de para entrar en la DB
       - MYSQL_PASSWORD_FILE=/run/secrets/db-user-pass
     volumes:
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql # Info from the directory where secrets are stored
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql    # Info from the directory where secrets are stored
       - db-data:/var/lib/mysql
     secrets:
       - db-root-pass
