@@ -6,7 +6,7 @@ services:
       args:
         - USERNAME=${USER:?error}
         - PROJECT_ROOT=${PROJECT_ROOT:?error}
-    expose:
+    expose:                                 # Exposing port to stack's network
       - "8000"
     working_dir: $PROJECT_ROOT
     volumes:
@@ -21,10 +21,10 @@ services:
         condition: service_healthy
         restart: true
     pull_policy: build
-    secrets:
+    secrets:                                # Using shared secret
       - db-user-pass
 
-  proxy:
+  proxy:                                          # Proxy service to serve static files faster, bypassing dynamic content to the web server
     image: nginx:latest
     ports:
       - "80:80"
@@ -45,9 +45,9 @@ services:
       - MYSQL_USER=user                                       # El usuario de para entrar en la DB
       - MYSQL_PASSWORD_FILE=/run/secrets/db-user-pass
     volumes:
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql    # Info from the directory where secrets are stored
-      - db-data:/var/lib/mysql
-    secrets:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql    
+      - db-data:/var/lib/mysql                                # Persisting stored data outside service's life-cycle
+    secrets:                                                  # Info from the directory where secrets are stored
       - db-root-pass
       - db-user-pass
     healthcheck:
@@ -61,13 +61,13 @@ services:
     #  watch:
     #    - action: sync+restart
     #      path: ./db/init.sql
-    #      target: /docker-entrypoint-initdb.d/init.sql
+    #      target: /docker-entrypoint-initdb.d/init.sql   # Do you want to restart the service on .sql file change?
 
 volumes:
   db-data:
 
 secrets:
   db-root-pass:                           # The secret will be mounted here
-    file: ./db/db-root-pass.example.txt   # This secret
-  db-user-pass:
-    file: ./db/db-user-pass.example.txt
+    file: ./db/db-root-pass.example.txt   # (This secret)
+  db-user-pass:                           # and here...
+    file: ./db/db-user-pass.example.txt   # another secret
