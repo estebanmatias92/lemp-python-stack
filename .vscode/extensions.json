@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+        "donjayamanne.python-extension-pack",
+        "visualstudioexptteam.intellicode-api-usage-examples",
+        "ms-python.black-formatter",
+        "sourcery.sourcery",
+        "almenon.arepl"
+    ]
+}

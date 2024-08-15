@@ -7,7 +7,7 @@ services:
         - USERNAME=${USER:?error}
         - PROJECT_ROOT=${PROJECT_ROOT:?error}
     ports:
-      - "8000:8000"
+      - 8000:8000
     working_dir: $PROJECT_ROOT
     volumes:
       - ./app:$PROJECT_ROOT
@@ -24,22 +24,12 @@ services:
     secrets:
       - db-user-pass
 
- # nginx:
- #   image: nginx:latest
- #   ports:
- #     - "80:80"
- #   volumes:
- #     - ./nginx/nginx.conf:/etc/nginx/nginx.conf
- #   depends_on:
- #     - app
-
   db:
     image: mysql:8.4
-    #image: mysql:5.7
     restart: unless-stopped
     command: --mysql-native-password=ON
     expose:
-      - "3306"
+      - 3306
     environment:
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-root-pass    # Info from the directory where secrets are stored
       - MYSQL_DATABASE=${DB_NAME}                             # Nombre de la base de datos 
@@ -57,7 +47,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-      #start_period: 20s  
+      # start_period: 20s  
     #develop:
     #  watch:
     #    - action: sync+restart
