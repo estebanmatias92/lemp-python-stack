@@ -1,16 +1,16 @@
 services:
-  app:
+  web:
     build:
-      context: ./app
+      context: ./web
       target: development
       args:
         - USERNAME=${USER:?error}
         - PROJECT_ROOT=${PROJECT_ROOT:?error}
     ports:
-      - 8000:8000
+      - "8000:8000"
     working_dir: $PROJECT_ROOT
     volumes:
-      - ./app:$PROJECT_ROOT
+      - ./web:$PROJECT_ROOT
     environment:
       - DB_HOST=db                          # Nombre del servicio (tambien IP) que tiene sirve la DB
       - DB_NAME=${DB_NAME}                  # Nombre de la base de datos a la que entrar
@@ -24,12 +24,21 @@ services:
     secrets:
       - db-user-pass
 
+  proxy:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - web
+
   db:
     image: mysql:8.4
     restart: unless-stopped
     command: --mysql-native-password=ON
     expose:
-      - 3306
+      - "3306"
     environment:
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-root-pass    # Info from the directory where secrets are stored
       - MYSQL_DATABASE=${DB_NAME}                             # Nombre de la base de datos 
