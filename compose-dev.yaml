@@ -6,8 +6,8 @@ services:
       args:
         - USERNAME=${USER:?error}
         - PROJECT_ROOT=${PROJECT_ROOT:?error}
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     working_dir: $PROJECT_ROOT
     volumes:
       - ./web:$PROJECT_ROOT
