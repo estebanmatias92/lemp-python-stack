@@ -1,6 +1,6 @@
 ## Python Docker Compose Stack
 
-An isolated Docker Compose Environment for building Python Apps.
+An isolated Docker Compose Environment for building Python webs.
 Just one service from Python:3.9 image with PDM installed, ready to work.
 Spin up the stack, attach your terminal to the service TTY and work with your IDE from your host machine.
 
@@ -16,9 +16,9 @@ This will start the services, keep the files in sync, watch for rebuilds, and sh
 
 Open another terminal and run:
 
-_`docker compose --env-file .env.dev -f compose-dev.yaml exec app bash`_
+_`docker compose --env-file .env.dev -f compose-dev.yaml exec web bash`_
 
-This will give you access to the **app** service terminal inside the workdir (project root directory).
+This will give you access to the **web** service terminal inside the workdir (project root directory).
 
 ### 3 - Create a Python project
 
@@ -64,9 +64,9 @@ To use git like you normally do in your host machine, you have to have:
 ## Temporary help
 
 
-To test the database from "app" service, just enter the bash in the app service
+To test the database from "web" service, just enter the bash in the web service
 
-_`docker compose exec app bash`_
+_`docker compose exec web bash`_
 
 And run the following command yo show all the databases in the db service
 
