@@ -23,6 +23,7 @@ FROM base AS development
 ARG USERNAME=vscode
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
+ENV PATH=$HOME/.local/bin:$PATH
 
 # Create the user
 RUN groupadd --gid $USER_GID $USERNAME \
@@ -45,6 +46,8 @@ RUN --mount=type=cache,target=/var/cache/apt apt-get update \
     default-libmysqlclient-dev \
     default-mysql-client \
     && apt-get clean
+# Templating tools for python projects
+RUN pip install cookiecutter copier
 
 # [Optional] Set the default user. Omit if you want to keep the default as root.
 USER $USERNAME
