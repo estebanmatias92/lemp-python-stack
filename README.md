@@ -1,6 +1,6 @@
-# LEMP stack for Python 
+# LEMP stack with Python
 
-Linux + Nginx + MySQL + Python, **minimal** stack thanks to docker compose
+Linux + Nginx + MySQL + Python, **minimal** stack, thanks to docker compose
 
 ## Services
 
