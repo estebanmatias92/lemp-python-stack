@@ -1,56 +1,151 @@
-## Python Docker Compose Stack
+# LEMP stack for Python 
 
-An isolated Docker Compose Environment for building Python webs.
-Just one service from Python:3.9 image with PDM installed, ready to work.
-Spin up the stack, attach your terminal to the service TTY and work with your IDE from your host machine.
+Linux + Nginx + MySQL + Python, **minimal** stack thanks to docker compose
+
+## Services
+
+### *Proxy*
+
+A [Nginx](https://hub.docker.com/_/nginx) server listening on exposed and forwarded port _`80`_. Redirects to the entrypoint for this app which is **web** ip address+port. 
+
+It depends on **web** service to start.
+
+### *Web* 
+
+An empty image of [Python: 3.9](https://hub.docker.com/_/python) with:
+
+- libmysql-client
+- mysql-client 
+- [PDM](https://pdm-project.org/en/latest/) for package management
+
+And dev tools for it's dev-stage like:
+
+- git
+- [cookiecutter](https://github.com/cookiecutter/cookiecutter)
+- [copier](https://copier.readthedocs.io/en/stable/)
+
+By default it has port _`8000`_ exposed, only to other services in this docker coompose network.
+
+This service depends on "**db**" service to start.
+
+### *DB* 
+
+[MySQL 8.4 LTS](https://hub.docker.com/_/mysql) service.
+
+It comes with an dummy _`init.sql`_ that creates a database "**todoapp**", uses the credentials from _`.env`_ and creates a table called "**tasks**".
+
+Exposed port 3306 by default.
 
 ## Use
 
-### 1 - Start up the stack
+You can start development from your usual **WSL** distribution, inside the terminal, *clone* this project and then *run* the commands.
 
-_`docker compose --env-file .env.dev -f compose-dev.yaml up --watch`_
+### 1 - **Start up the stack**
+
+```bash
+docker compose --env-file .env.dev -f compose-dev.yaml up --watch
+```
 
 This will start the services, keep the files in sync, watch for rebuilds, and show you the services's logs.
 
-### 2 - Enter the service terminal
+### 2 - **Enter web service terminal**
 
 Open another terminal and run:
 
-_`docker compose --env-file .env.dev -f compose-dev.yaml exec web bash`_
+```bash
+docker compose --env-file .env.dev -f compose-dev.yaml exec web bash
+```
 
 This will give you access to the **web** service terminal inside the workdir (project root directory).
 
-### 3 - Create a Python project
+### 3 - **Create a Python project**
 
 Once inside the container you can run PDM commands and create a new project.
 
-_`pdm init [template]`_
+```bash
+pdm init [template]
+```
 
-You can now dd package(s) to pyproject.toml and install them
+### 4 - **Add dependency packages needed**
 
-_`pdm add <package> [packages...]`_
+You can now dd package(s) to _`pyproject.toml`_ and install them.
 
-And/Or install dependencies from lock file and resolve paths
+```bash
+pdm add <package> [packages...]
+```
 
-_`pdm install [packages...]`_
+### 5 - **Install everything...**
 
-### 4 - Tipical pip commands
+And install dependencies from lock file and resolve paths.
 
-To list packages installed in the current working set
+```bash
+pdm install [packages...]
+```
 
-_`pdm list`_
+This also builds the project as "editable" package.
 
-Resolve and lock dependencies and update the pdm.lock file
 
-_`pdm lock`_
+### 5 - **Run the project!!!**
 
-You can also update package(s) in pyproject.toml
+If you created a project from a template or wrote the app, the entrypoint will be or probably should be referenced in _`[pdm.script]`_ block-section in _`pyproject.toml`_ with the key _`start`_
 
-_`pdm update [packages...]`_
+```bash
+pdm run start
+```
 
-And also remove packages from pyproject.toml
+Now enjoy!!!
 
-_`pdm remove <package> [packages...]`_
+### 6 - Common PDM commands
+
+To list packages installed in the current working set.
+
+```bash
+pdm list
+```
+
+Resolve and lock dependencies and update the _`pdm.lock`_ file.
+
+```bash
+pdm lock
+```
+
+You can also update package(s) in _`pyproject.toml`_.
+
+```bash
+pdm update [packages...]
+```
+
+And also remove packages from _`pyproject.toml`_.
+
+```bash
+pdm remove <package> [packages...]
+```
+
+## Some extra help
+
+To test the database from **web** service, just enter the bash in the **web** service.
+
+```bash
+docker compose exec web bash
+```
+
+And run the following command yo show all the databases in the **db** service.
+
+```bash
+mysql --user=$DB_USER --password=$(cat $DB_PASS) --host=$DB_HOST --execute="SHOW DATABASES;"
+```
+
+To test it from the "**db**" service enter the bash.
+
+```bash
+docker compose exec db bash
+```
+
+And run the following command too.
+
+```bash
+mysql --user=$MYSQL_USER --password=$(cat $MYSQL_PASSWORD_FILE) --execute "SHOW DATABASES;"
+```
 
 ## Clarifications
 
@@ -58,25 +153,5 @@ _`pdm remove <package> [packages...]`_
 
 To use git like you normally do in your host machine, you have to have:
 
-- Docker Desktop **_"WSL 2 based engine"_** option enabled
-- Your **_github credentials_** configured in your default WSL2 distro
-
-## Some extra help
-
-
-To test the database from "web" service, just enter the bash in the web service
-
-_`docker compose exec web bash`_
-
-And run the following command yo show all the databases in the db service
-
-_`mysql --user=$DB_USER --password=$(cat $DB_PASS) --host=$DB_HOST --execute="SHOW DATABASES;"`_
-
-
-To test it from the "db" service enter the bash
-
-_`docker compose exec db bash`_
-
-And run the following command too
-
-_`mysql --user=$MYSQL_USER --password=$(cat $MYSQL_PASSWORD_FILE) --execute "SHOW DATABASES;"`_
+- Docker Desktop **_"WSL 2 based engine"_** option enabled.
+- Your **_github credentials_** configured in your default WSL2 distro.
