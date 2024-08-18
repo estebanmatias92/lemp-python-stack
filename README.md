@@ -61,7 +61,7 @@ To use git like you normally do in your host machine, you have to have:
 - Docker Desktop **_"WSL 2 based engine"_** option enabled
 - Your **_github credentials_** configured in your default WSL2 distro
 
-## Temporary help
+## Some extra help
 
 
 To test the database from "web" service, just enter the bash in the web service
