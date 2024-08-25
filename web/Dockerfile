@@ -1,17 +1,15 @@
 ARG PYTHON_BASE=3.9
 
-#The base image for the container 
-FROM python:$PYTHON_BASE AS base
+FROM python:${PYTHON_BASE} AS base
 
 # Will ONLY be available in the inherited stages
-ONBUILD ARG PROJECT_ROOT=/project
+ONBUILD ARG PROJECT_ROOT="/code"
 
 # Keeps Python from generating .pyc files in the container 
 ENV PYTHONDONTWRITEBYTECODE=1  
 # Turns off buffering for easier container logging 
 ENV PYTHONUNBUFFERED=1 
 
-# install PDM
 RUN pip install -U pdm
 
 
@@ -20,7 +18,7 @@ RUN pip install -U pdm
 #
 FROM base AS development
 
-ARG USERNAME=vscode
+ARG USERNAME="vscode"
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
@@ -34,7 +32,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
 #    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
 #    && chmod 0440 /etc/sudoers.d/$USERNAME
 
-ENV PATH=$HOME/.local/bin:$PATH
+ENV PATH="$HOME/.local/bin:$PATH"
 
 # ********************************************************
 # * Anything else you want to do like clean up goes here *
@@ -42,13 +40,12 @@ ENV PATH=$HOME/.local/bin:$PATH
 
 # Install dev tools [as root]
 RUN --mount=type=cache,target=/var/cache/apt apt-get update \
-    && apt-get install -y \
-    python3-dev \
-    default-libmysqlclient-dev \
-    default-mysql-client \
+    && apt-get install -y --no-install-recommends python3-dev default-libmysqlclient-dev default-mysql-client \
     && apt-get clean
-# Templating tools for python projects
-RUN pip install cookiecutter copier
+
+# Python bundlers and tooling
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install cookiecutter copier
 
 # [Optional] Set the default user. Omit if you want to keep the default as root.
 USER $USERNAME
@@ -67,13 +64,17 @@ FROM base AS builder
 
 # disable update check
 ENV PDM_CHECK_UPDATE=false
-# copy files
-COPY pyproject.toml pdm.lock README.md $PROJECT_ROOT/
-COPY src/ $PROJECT_ROOT/src
 
-# install dependencies and project into the local packages directory
 WORKDIR $PROJECT_ROOT
-RUN pdm install --check --prod --no-editable
+
+# Download dependencies as a separate step to take advantage of Docker's caching.
+# Leverage a cache mount to /root/.npm to speed up subsequent builds.
+# Leverage a bind mounts to pyproject.toml and pdm.lock to avoid having to copy them into
+# into this layer.
+RUN --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    --mount=type=bind,source=pdm.lock,target=pdm.lock \
+    --mount=type=cache,target=/home/docs/.cache/pdm \
+    pdm install --check --prod --no-editable
 
 
 #
@@ -82,9 +83,13 @@ RUN pdm install --check --prod --no-editable
 #
 FROM python:${PYTHON_BASE}-slim AS production
 
-# retrieve packages from build stage
-COPY --from=builder $PROJECT_ROOT/.venv/ $PROJECT_ROOT/.venv
-ENV PATH="$PROJECT_ROOT/.venv/bin:$PATH"
-# set command/entrypoint, adapt to fit your needs
-COPY src $PROJECT_ROOT/src
+WORKDIR /usr/src/app
+
+ENV PATH="$PWD/.venv/bin:$PATH"
+
+# Retrieve packages from build stage
+COPY --from=builder $PROJECT_ROOT/.venv/ ./.venv
+
+COPY src ./src
+
 CMD ["python", "src/__main__.py"]
