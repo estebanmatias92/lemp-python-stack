@@ -2,25 +2,20 @@ ARG PYTHON_BASE=3.9
 
 FROM python:${PYTHON_BASE} AS base
 
-# Will ONLY be available in the inherited stages
-ONBUILD ARG PROJECT_ROOT="/code"
+# Prevents Python from writing pyc files.
+ENV PYTHONDONTWRITEBYTECODE=1
 
-# Keeps Python from generating .pyc files in the container 
-ENV PYTHONDONTWRITEBYTECODE=1  
-# Turns off buffering for easier container logging 
-ENV PYTHONUNBUFFERED=1 
+# Keeps Python from buffering stdout and stderr to avoid situations where
+# the application crashes without emitting any logs due to buffering.
+ENV PYTHONUNBUFFERED=1
 
-RUN pip install -U pdm
+ARG USERNAME="appuser"
+ARG PROJECT_DIR="/app"
 
-
-#
-# Development dependencies
-#
-FROM base AS development
-
-ARG USERNAME="vscode"
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
+
+ONBUILD WORKDIR $PROJECT_DIR
 
 # Create the user
 RUN groupadd --gid $USER_GID $USERNAME \
@@ -31,6 +26,16 @@ RUN groupadd --gid $USER_GID $USERNAME \
 #    && apt-get install -y sudo \
 #    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
 #    && chmod 0440 /etc/sudoers.d/$USERNAME
+
+# Install better package manager
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install -U pdm
+
+
+#
+# Development dependencies
+#
+FROM base AS development
 
 ENV PATH="$HOME/.local/bin:$PATH"
 
@@ -50,11 +55,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # [Optional] Set the default user. Omit if you want to keep the default as root.
 USER $USERNAME
 
-# If you want to use watch, first copy the files
-# COPY --chown=$USERNAME:$USER_GID ./ $PROJECT_ROOT
-
-# Keep the container alive
-CMD ["sleep", "infinity"]
+COPY . .
 
 
 #
@@ -64,8 +65,6 @@ FROM base AS builder
 
 # disable update check
 ENV PDM_CHECK_UPDATE=false
-
-WORKDIR $PROJECT_ROOT
 
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.npm to speed up subsequent builds.
@@ -88,7 +87,7 @@ WORKDIR /usr/src/app
 ENV PATH="$PWD/.venv/bin:$PATH"
 
 # Retrieve packages from build stage
-COPY --from=builder $PROJECT_ROOT/.venv/ ./.venv
+COPY --from=builder $PROJECT_DIR/.venv/ ./.venv
 
 COPY src ./src
 

@@ -4,13 +4,13 @@ services:
       context: ./web
       target: development
       args:
-        - USERNAME=${USER:?error}
-        - PROJECT_ROOT=${PROJECT_ROOT:?error}
+        - PROJECT_DIR=${PROJECT_DIR:?error}
+    stdin_open: true
+    tty: true
     expose:                                 # Exposing port to stack's network
       - "8000"
-    working_dir: $PROJECT_ROOT
     volumes:
-      - ./web:$PROJECT_ROOT
+      - ./web:${PROJECT_DIR}
     environment:
       - DB_HOST=db                          # Nombre del servicio (tambien IP) que tiene sirve la DB
       - DB_NAME=${DB_NAME}                  # Nombre de la base de datos a la que entrar
