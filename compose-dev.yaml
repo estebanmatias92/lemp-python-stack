@@ -1,12 +1,12 @@
 services:
   web:
-    stdin_open: true
-    tty: true
     build:
       context: ./web
       target: development
       args:
         - PROJECT_DIR=${PROJECT_DIR:?error}
+    stdin_open: true
+    tty: true
     secrets:                                # Using shared secret
       - db-user-pass
     volumes:

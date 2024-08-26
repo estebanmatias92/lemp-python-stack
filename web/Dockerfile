@@ -16,14 +16,12 @@ ARG PROJECT_DIR="/app"
 RUN groupadd --system \
                 --gid "1000" \
                 ${USERNAME} \
-
-    && useradd --system 
+    && useradd --system \
                 --gid "1000" \
                 --shell /bin/bash \
                 --uid "1000" \
                 --create-home \
                 ${USERNAME} \
-
     && mkdir -p ${PROJECT_DIR} \
     && chown -R ${USERNAME}:${USERNAME} ${PROJECT_DIR} 
     #    # [Optional] Add sudo support. Omit if you don't need to install software after connecting.
