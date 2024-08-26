@@ -9,39 +9,48 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # the application crashes without emitting any logs due to buffering.
 ENV PYTHONUNBUFFERED=1
 
-ARG USERNAME="appuser"
+ARG USERNAME="python"
 ARG PROJECT_DIR="/app"
 
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
+# Create the group, user and the project directory with permissions
+RUN groupadd --system \
+                --gid "1000" \
+                ${USERNAME} \
 
-ONBUILD WORKDIR $PROJECT_DIR
+    && useradd --system 
+                --gid "1000" \
+                --shell /bin/bash \
+                --uid "1000" \
+                --create-home \
+                ${USERNAME} \
 
-# Create the user
-RUN groupadd --gid $USER_GID $USERNAME \
-&& useradd --uid $USER_UID --gid $USER_GID -m $USERNAME 
-#    #
-#    # [Optional] Add sudo support. Omit if you don't need to install software after connecting.
-#    && apt-get update \
-#    && apt-get install -y sudo \
-#    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-#    && chmod 0440 /etc/sudoers.d/$USERNAME
+    && mkdir -p ${PROJECT_DIR} \
+    && chown -R ${USERNAME}:${USERNAME} ${PROJECT_DIR} 
+    #    # [Optional] Add sudo support. Omit if you don't need to install software after connecting.
+    #    && apt-get update \
+    #    && apt-get install -y sudo \
+    #    && echo ${USERNAME} ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/${USERNAME} \
+    #    && chmod 0440 /etc/sudoers.d/${USERNAME}
+
+# Add user binaries to the path
+ENV PATH="/home/${USERNAME}/.local/bin:${PATH}"
+
+# ********************************************************
+# * Anything else you want to do like clean up goes here *
+# ********************************************************
+
+# Set working dir for the next stages
+ONBUILD WORKDIR ${PROJECT_DIR}
 
 # Install better package manager
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install -U pdm
-
+               
 
 #
 # Development dependencies
 #
 FROM base AS development
-
-ENV PATH="$HOME/.local/bin:$PATH"
-
-# ********************************************************
-# * Anything else you want to do like clean up goes here *
-# ********************************************************
 
 # Install dev tools [as root]
 RUN --mount=type=cache,target=/var/cache/apt apt-get update \
@@ -53,7 +62,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install cookiecutter copier
 
 # [Optional] Set the default user. Omit if you want to keep the default as root.
-USER $USERNAME
+USER ${USERNAME}
 
 COPY . .
 
@@ -84,10 +93,10 @@ FROM python:${PYTHON_BASE}-slim AS production
 
 WORKDIR /usr/src/app
 
-ENV PATH="$PWD/.venv/bin:$PATH"
+ENV PATH="${PWD}/.venv/bin:${PATH}"
 
 # Retrieve packages from build stage
-COPY --from=builder $PROJECT_DIR/.venv/ ./.venv
+COPY --from=builder ${PROJECT_DIR}/.venv/ ./.venv
 
 COPY src ./src
 
